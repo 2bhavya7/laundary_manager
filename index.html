@@ -474,6 +474,39 @@
     /* Smooth scroll for calendar */
     .cal-scroll{scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
     .cal-day{scroll-snap-align:center}
+
+    /* ===== ORBIT ANIMATION ===== */
+    .orbit-wrap{position:relative;width:260px;height:260px;margin:20px auto}
+    .orbit-center{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      width:70px;height:70px;border-radius:50%;
+      background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;
+    }
+    .orbit-center .oc-num{font-size:20px;font-weight:800;line-height:1}
+    .orbit-center .oc-lbl{font-size:8px;font-weight:600;opacity:0.4;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+    .orbit-ring{
+      position:absolute;top:50%;left:50%;border-radius:50%;
+      border:1px solid rgba(255,255,255,0.04);
+      animation:orbit-spin linear infinite;will-change:transform;
+    }
+    .orbit-ring.r1{width:160px;height:160px;margin:-80px 0 0 -80px;animation-duration:20s}
+    .orbit-ring.r2{width:240px;height:240px;margin:-120px 0 0 -120px;animation-duration:30s;animation-direction:reverse}
+    @keyframes orbit-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    .orbit-dot{
+      position:absolute;border-radius:50%;
+      background:rgba(10,12,20,0.8);border:1px solid rgba(255,255,255,0.12);
+      display:flex;align-items:center;justify-content:center;
+      font-size:9px;font-weight:700;animation:orbit-counter-spin linear infinite;will-change:transform;
+    }
+    .orbit-ring.r1 .orbit-dot{width:38px;height:38px;animation-duration:20s}
+    .orbit-ring.r2 .orbit-dot{width:34px;height:34px;animation-duration:30s;animation-direction:reverse}
+    @keyframes orbit-counter-spin{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+    .orbit-ring.r2 .orbit-dot{animation-name:orbit-counter-spin-rev}
+    @keyframes orbit-counter-spin-rev{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    .orbit-dot .od-inner{display:flex;flex-direction:column;align-items:center;line-height:1}
+    .orbit-dot .od-qty{font-size:11px;font-weight:800}
+    .orbit-dot .od-name{font-size:6px;font-weight:600;opacity:0.5;max-width:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   </style>
 </head>
 <body>
@@ -633,6 +666,14 @@
 
   <!-- ====== CHART ====== -->
   <div id="t-chart" class="tcontent">
+    <div class="glass">
+      <div class="stitle"><span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6" opacity=".5"/><circle cx="12" cy="12" r="2"/></svg></span>Item Orbit <span class="badge">Live</span></div>
+      <div id="orbitWrap" class="orbit-wrap">
+        <div class="orbit-center"><div class="oc-num" id="orbitTotal">0</div><div class="oc-lbl">pieces</div></div>
+        <div class="orbit-ring r1" id="orbitR1"></div>
+        <div class="orbit-ring r2" id="orbitR2"></div>
+      </div>
+    </div>
     <div class="glass">
       <div class="stitle"><span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6" opacity=".5"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>Clothes Breakdown <span class="badge">Radar</span></div>
       <div class="chart-wrap" id="rW"><div class="chart-empty">Add items to see chart</div></div>
@@ -847,7 +888,7 @@ function selectTab(t){
   const d=TAB_DATA[t];
   document.getElementById('ttLabel').innerHTML=d.icon+' '+d.label;
   // Run section-specific logic
-  if(t==='chart'){rRadar();rStats()}
+  if(t==='chart'){rOrbit();rRadar();rStats()}
   else if(t==='hist'){loadH()}
   else if(t==='themes'){renderThemes()}
 }
@@ -879,6 +920,40 @@ function rRadar(){
   for(let i=0;i<n;i++){const a=as*i-Math.PI/2;axes+=`<line x1="${cx}" y1="${cy}" x2="${cx+mR*Math.cos(a)}" y2="${cy+mR*Math.sin(a)}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`}
   for(let i=0;i<n;i++){const a=as*i-Math.PI/2,r=data[i].qty/mx*mR;pts.push(`${cx+r*Math.cos(a)},${cy+r*Math.sin(a)}`);dots+=`<circle cx="${cx+r*Math.cos(a)}" cy="${cy+r*Math.sin(a)}" r="3" fill="rgba(255,255,255,0.7)" stroke="#090a0f" stroke-width="1.5"/>`;const lx=cx+(mR+18)*Math.cos(a),ly=cy+(mR+18)*Math.sin(a);const sh=data[i].name.length>7?data[i].name.slice(0,6)+'..':data[i].name;labels+=`<text x="${lx}" y="${ly}" class="chart-label">${sh} (${data[i].qty})</text>`}
   w.innerHTML=`<svg viewBox="0 0 300 280" width="280" height="260">${rings}${axes}<polygon points="${pts.join(' ')}" fill="rgba(52,211,153,0.10)" stroke="rgba(255,255,255,0.55)" stroke-width="1.5"/>${dots}${labels}</svg>`;
+}
+
+// Orbit visualization
+function rOrbit(){
+  const all=[...MAIN,...OTH],aq=[...mQ,...oQ];
+  const hist=JSON.parse(localStorage.getItem('dhobi')||'[]');
+  const ti={};let total=0;
+  all.forEach((n,i)=>{if(aq[i])ti[n]=(ti[n]||0)+aq[i]});
+  hist.forEach(e=>e.items.forEach(it=>{ti[it.name]=(ti[it.name]||0)+it.qty}));
+  Object.values(ti).forEach(v=>total+=v);
+  document.getElementById('orbitTotal').textContent=total;
+  const sorted=Object.entries(ti).sort((a,b)=>b[1]-a[1]);
+  if(!sorted.length){
+    document.getElementById('orbitR1').innerHTML='';
+    document.getElementById('orbitR2').innerHTML='';
+    return;
+  }
+  // Inner ring: top 3-4, Outer ring: next 3-4
+  const inner=sorted.slice(0,Math.min(4,sorted.length));
+  const outer=sorted.slice(4,Math.min(8,sorted.length));
+  function placeDots(items,ringId,radius){
+    const el=document.getElementById(ringId);el.innerHTML='';
+    const n=items.length;if(!n)return;
+    items.forEach(([name,qty],i)=>{
+      const angle=(360/n)*i;
+      const rad=angle*Math.PI/180;
+      const x=radius+radius*Math.cos(rad);
+      const y=radius+radius*Math.sin(rad);
+      const sh=name.length>5?name.slice(0,4)+'…':name;
+      el.innerHTML+=`<div class="orbit-dot" style="left:${x-19}px;top:${y-19}px"><div class="od-inner"><span class="od-qty">${qty}</span><span class="od-name">${sh}</span></div></div>`;
+    });
+  }
+  placeDots(inner,'orbitR1',80);
+  placeDots(outer,'orbitR2',120);
 }
 
 function rStats(){
