@@ -819,28 +819,46 @@ function loadH(){
 }
 function dE(i){if(!confirm('Delete?'))return;const h=JSON.parse(localStorage.getItem('dhobi')||'[]');h.splice(i,1);localStorage.setItem('dhobi',JSON.stringify(h));loadH();toast('Deleted')}
 
-// Tabs
-function stab(t){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  document.querySelectorAll('.tcontent').forEach(c=>c.classList.remove('on'));
-  const tabs=document.querySelectorAll('.tab');
-  const moreBtn=document.getElementById('moreBtn');
-  moreBtn.classList.remove('open');
-  if(t==='new'){tabs[0].classList.add('on');document.getElementById('t-new').classList.add('on')}
-  else if(t==='chart'){tabs[1].classList.add('on');document.getElementById('t-chart').classList.add('on');rRadar();rStats()}
-  else if(t==='hist'){tabs[2].classList.add('on');document.getElementById('t-hist').classList.add('on');loadH()}
-  else if(t==='themes'){moreBtn.classList.add('open');document.getElementById('t-themes').classList.add('on');renderThemes()}
+// Tab data
+const TAB_DATA={
+  new:{label:'New Entry',icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'},
+  chart:{label:'Chart',icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>'},
+  hist:{label:'History',icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'},
+  themes:{label:'Themes',icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>'}
+};
+
+function toggleTabPanel(){
+  const panel=document.getElementById('tabPanel');
+  const trigger=document.getElementById('tabTrigger');
+  const isOpen=panel.classList.contains('open');
+  panel.classList.toggle('open');
+  trigger.classList.toggle('open');
 }
 
-// Dropdown
-function toggleDD(e){
-  e.stopPropagation();
-  document.getElementById('tabDD').classList.toggle('show');
+function selectTab(t){
+  // Close panel
+  document.getElementById('tabPanel').classList.remove('open');
+  document.getElementById('tabTrigger').classList.remove('open');
+  // Hide all content
+  document.querySelectorAll('.tcontent').forEach(c=>c.classList.remove('on'));
+  // Show selected
+  document.getElementById('t-'+t).classList.add('on');
+  // Update trigger label
+  const d=TAB_DATA[t];
+  document.getElementById('ttLabel').innerHTML=d.icon+' '+d.label;
+  // Run section-specific logic
+  if(t==='chart'){rRadar();rStats()}
+  else if(t==='hist'){loadH()}
+  else if(t==='themes'){renderThemes()}
 }
-function closeDD(){document.getElementById('tabDD').classList.remove('show')}
+
+// Close panel on outside click
 document.addEventListener('click',function(e){
-  const dd=document.getElementById('tabDD');
-  if(dd&&!document.getElementById('moreBtn').contains(e.target))dd.classList.remove('show');
+  const sel=document.getElementById('tabSelector');
+  if(sel&&!sel.contains(e.target)){
+    document.getElementById('tabPanel').classList.remove('open');
+    document.getElementById('tabTrigger').classList.remove('open');
+  }
 });
 
 // Map
@@ -921,12 +939,16 @@ function applyTheme(id){
   // Cards
   document.querySelectorAll('.glass').forEach(el=>el.style.background=t.card);
   document.querySelectorAll('.hc').forEach(el=>el.style.background=t.card);
-  document.querySelectorAll('.tabs').forEach(el=>el.style.background=t.card);
+  // Tab selector
+  const trigger=document.getElementById('tabTrigger');
+  if(trigger){trigger.style.background=t.card;trigger.style.borderColor=t.border}
+  const panel=document.getElementById('tabPanel');
+  if(panel){panel.style.background=t.card;panel.style.borderColor=t.border}
   // Text
   document.body.style.color=t.fg;
   document.querySelectorAll('.tagline,.sl,.cpi-label,.cal-footer button,.map-s,.uhint,.hm,.hs,.chart-empty,.bar-name').forEach(el=>el.style.color=t.fgSub);
   // Borders
-  document.querySelectorAll('.glass,.tabs,.hc,.crow,.qstep,.map-inner').forEach(el=>el.style.borderColor=t.border);
+  document.querySelectorAll('.glass,.hc,.crow,.qstep,.map-inner').forEach(el=>el.style.borderColor=t.border);
   // Accent on SVG icons in section headers
   document.querySelectorAll('.sec-ico svg').forEach(el=>el.setAttribute('stroke',t.accent));
   // Modal
