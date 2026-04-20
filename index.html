@@ -21,7 +21,10 @@
     html{scroll-behavior:smooth}
     body{
       font-family:'Inter',-apple-system,sans-serif;
-      background:radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%);
+      background-color:#090a0f;
+      background-image:radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%);
+      background-attachment:fixed;
+      background-size:cover;
       color:#fff;min-height:100vh;overflow-x:hidden;
       -webkit-overflow-scrolling:touch;
       overscroll-behavior-y:contain;
@@ -56,20 +59,24 @@
     }
     .header .tagline{color:rgba(255,255,255,0.4);font-size:13px;margin-top:6px}
 
-    /* ===== GLASS — pure transparent, no solid bg ===== */
+    /* ===== GLASS ===== */
     .glass{
-      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
       border:1px solid rgba(255,255,255,0.08);border-radius:22px;
       padding:20px;margin-bottom:16px;position:relative;overflow:hidden;
-      background:rgba(255,255,255,0.04);
-      transition:all 0.3s ease;
+      background:rgba(10,12,20,0.65);
+      transition:border-color 0.3s ease;
     }
     .glass::before{
       content:'';position:absolute;inset:0;border-radius:22px;
       box-shadow:inset 1px 1px 0 0 rgba(255,255,255,0.06),inset -1px -1px 0 0 rgba(255,255,255,0.02);
       pointer-events:none;
     }
-    .glass:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.06)}
+    .glass:hover{border-color:rgba(255,255,255,0.14)}
+
+    /* Desktop only: enable blur for glass effect */
+    @media(hover:hover) and (min-width:768px){
+      .glass{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:rgba(255,255,255,0.04)}
+    }
 
     .stitle{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:9px}
     .badge{font-size:10px;font-weight:700;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:2px 9px;border-radius:16px;color:rgba(255,255,255,0.5)}
@@ -82,9 +89,12 @@
 
     /* ===== TABS ===== */
     .tabs{
-      display:flex;backdrop-filter:blur(12px);
-      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      background:rgba(10,12,20,0.60);border:1px solid rgba(255,255,255,0.08);
       border-radius:15px;padding:3px;margin-bottom:20px;
+    }
+    @media(hover:hover) and (min-width:768px){
+      .tabs{backdrop-filter:blur(12px);background:rgba(255,255,255,0.04)}
     }
     .tab{
       flex:1;padding:12px 6px;background:none;border:none;
@@ -194,8 +204,7 @@
 
     .qstep{
       display:flex;align-items:center;border-radius:10px;overflow:hidden;
-      border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,0.15);
-      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,0.25);
     }
     .qstep button{
       width:32px;height:32px;background:none;border:none;
@@ -211,8 +220,7 @@
     /* ===== UPLOAD ===== */
     .uzone{
       border:2px dashed rgba(255,255,255,0.08);border-radius:16px;
-      padding:24px 16px;text-align:center;cursor:pointer;transition:all 0.3s;
-      backdrop-filter:blur(8px);
+      padding:24px 16px;text-align:center;cursor:pointer;transition:border-color 0.3s;
     }
     .uzone:hover{border-color:rgba(255,255,255,0.20);background:rgba(255,255,255,0.03)}
     .uzone input{display:none}
@@ -253,7 +261,10 @@
 
     /* ===== MAP ===== */
     .map-card{cursor:pointer;user-select:none}
-    .map-inner{overflow:hidden;border-radius:18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);backdrop-filter:blur(12px)}
+    .map-inner{overflow:hidden;border-radius:18px;background:rgba(10,12,20,0.50);border:1px solid rgba(255,255,255,0.06);transition:border-color 0.4s ease}
+    @media(hover:hover) and (min-width:768px){
+      .map-inner{backdrop-filter:blur(12px);background:rgba(255,255,255,0.03)}
+    }
     .map-inner.exp{border-color:rgba(255,255,255,0.12)}
     .map-top{padding:14px;display:flex;align-items:center;justify-content:space-between}
     .map-ico{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center}
@@ -279,19 +290,19 @@
       transition:all 0.35s cubic-bezier(0.175,0.885,0.32,1.275);width:100%;
     }
     .btn:active{transform:scale(0.96)}
-    .btn-p{background:rgba(255,255,255,0.10);color:#fff;border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(12px);box-shadow:0 4px 22px rgba(255,255,255,0.04)}
+    .btn-p{background:rgba(255,255,255,0.10);color:#fff;border:1px solid rgba(255,255,255,0.15);box-shadow:0 4px 22px rgba(255,255,255,0.04)}
     .btn-p:hover{background:rgba(255,255,255,0.14);box-shadow:0 6px 30px rgba(255,255,255,0.06);transform:translateY(-2px)}
     .btn-g{
       background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.6);
-      border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.08);
     }
     .btn-g:hover{background:rgba(255,255,255,0.08)}
 
     /* ===== MODAL ===== */
-    .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:1000;align-items:center;justify-content:center;padding:20px}
+    .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;padding:20px}
     .ov.open{display:flex}
     .modal{
-      background:rgba(15,15,30,0.6);backdrop-filter:blur(30px);
+      background:rgba(12,14,28,0.95);
       border:1px solid rgba(255,255,255,0.08);border-radius:26px;
       padding:28px 24px;max-width:420px;width:100%;max-height:85vh;overflow-y:auto;
       animation:mp .35s cubic-bezier(0.175,0.885,0.32,1.275);
@@ -309,7 +320,7 @@
     .rt .rq{font-size:22px;color:rgba(255,255,255,0.9)}
 
     /* ===== HISTORY ===== */
-    .hc{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);margin-bottom:8px;cursor:pointer;transition:all 0.25s;backdrop-filter:blur(8px)}
+    .hc{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:14px;background:rgba(10,12,20,0.50);border:1px solid rgba(255,255,255,0.04);margin-bottom:8px;cursor:pointer;transition:border-color 0.25s}
     .hc:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);transform:translateY(-1px)}
     .hb{font-weight:700;font-size:14px}
     .hm{font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px}
@@ -325,7 +336,7 @@
     /* ===== TOAST ===== */
     .toast{
       position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(70px);
-      background:rgba(20,20,40,0.7);backdrop-filter:blur(16px);
+      background:rgba(12,14,28,0.92);
       border:1px solid rgba(255,255,255,0.08);color:#fff;padding:12px 24px;
       border-radius:14px;font-size:13px;font-weight:700;z-index:2000;opacity:0;
       transition:all .4s cubic-bezier(0.175,0.885,0.32,1.275);pointer-events:none;
@@ -336,9 +347,9 @@
 
     /* ===== MOBILE RESPONSIVE ===== */
 
-    /* GPU acceleration for smooth animations */
-    .glass,.tab,.btn,.crow,.hc,.cal-day .day-num,.map-inner,.modal,.toast{
-      will-change:transform;transform:translateZ(0);-webkit-transform:translateZ(0);
+    /* GPU acceleration — only on interactive elements, not containers */
+    .btn,.tab,.cal-day .day-num,.modal{
+      transform:translateZ(0);-webkit-transform:translateZ(0);
     }
 
     /* Touch feedback */
@@ -406,7 +417,6 @@
     @media(prefers-reduced-motion:reduce){
       *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
       #stars,#stars2,#stars3{animation:none!important}
-      .glass{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     }
 
     /* Landscape phone */
