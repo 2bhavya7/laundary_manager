@@ -364,6 +364,13 @@
     }
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+    /* ===== LIGHTBOX ===== */
+    .lb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:3000;align-items:center;justify-content:center;padding:16px}
+    .lb-ov.open{display:flex;animation:fi .3s ease;}
+    .lb-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:16px;box-shadow:0 15px 50px rgba(0,0,0,0.6);}
+    .lb-close{position:absolute;top:max(20px,env(safe-area-inset-top));right:max(20px,env(safe-area-inset-right));width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(5px);z-index:3001;}
+    .lb-close:active{background:rgba(255,255,255,0.2)}
+
     ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:10px}
 
     /* ===== THEME CARDS ===== */
@@ -715,6 +722,12 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- Lightbox -->
+<div class="lb-ov" id="lbOv" onclick="closeLB()">
+  <button class="lb-close" onclick="closeLB()">✕</button>
+  <img id="lbImg" class="lb-img" src="" onclick="event.stopPropagation()">
+</div>
+
 <script>
 const MAIN=['Kurta','Pajama','Shirt','T-Shirt','Pant','Lower','Shorts','Bedsheet','Pillow Cover','Towel','Duppata'];
 const OTH=['Under Garments','Socks','Hankey'];
@@ -839,7 +852,7 @@ function showR(e){
   e.items.forEach(it=>{b.innerHTML+=`<div class="ri"><span class="rn">${it.name}</span><span class="rq">${it.qty}</span></div>`});
   if(e.images && e.images.length>0){
     let imgs = '<div style="display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:5px;">';
-    e.images.forEach(img=>{imgs+=`<img src="${img}" style="height:60px;width:60px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,0.1)">`});
+    e.images.forEach(img=>{imgs+=`<img src="${img}" style="height:60px;width:60px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,0.1);cursor:pointer;" onclick="openLB(this.src)">`});
     imgs += '</div>';
     b.innerHTML+=imgs;
   }
@@ -847,6 +860,9 @@ function showR(e){
   document.getElementById('rcO').classList.add('open');
 }
 function cR(){document.getElementById('rcO').classList.remove('open')}
+
+function openLB(s){document.getElementById('lbImg').src=s;document.getElementById('lbOv').classList.add('open');}
+function closeLB(){document.getElementById('lbOv').classList.remove('open');}
 
 // Reset
 function resetAll(){
