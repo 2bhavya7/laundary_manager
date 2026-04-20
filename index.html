@@ -345,6 +345,26 @@
 
     ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:10px}
 
+    /* ===== THEME CARDS ===== */
+    .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .tcard{
+      border-radius:14px;padding:14px;cursor:pointer;
+      border:2px solid rgba(255,255,255,0.06);
+      transition:border-color 0.25s,transform 0.2s;
+      position:relative;
+    }
+    .tcard:active{transform:scale(0.97)}
+    .tcard.active{border-color:rgba(255,255,255,0.35)}
+    .tcard .tc-name{font-size:12px;font-weight:700;margin-bottom:8px;color:inherit}
+    .tcard .tc-dots{display:flex;gap:5px}
+    .tcard .tc-dot{width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,0.1)}
+    .tcard .tc-check{
+      position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;
+      background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);
+      display:none;align-items:center;justify-content:center;
+    }
+    .tcard.active .tc-check{display:flex}
+
     /* ===== MOBILE RESPONSIVE ===== */
 
     /* GPU acceleration — only on interactive elements, not containers */
@@ -452,6 +472,7 @@
     <button class="tab on" onclick="stab('new')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:inline;vertical-align:middle;margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Entry</button>
     <button class="tab" onclick="stab('chart')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:inline;vertical-align:middle;margin-right:4px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Chart</button>
     <button class="tab" onclick="stab('hist')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:inline;vertical-align:middle;margin-right:4px"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>History</button>
+    <button class="tab" onclick="stab('themes')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:inline;vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>Themes</button>
   </div>
 
   <!-- ====== NEW ENTRY ====== -->
@@ -476,7 +497,7 @@
         </div>
         <div style="font-size:18px;color:rgba(255,255,255,0.15)">→</div>
         <div style="text-align:right">
-          <div class="cpi-label">Pick Date (+4 days)</div>
+          <div class="cpi-label">Pick Date (+3 days)</div>
           <div class="cpi-val" id="calPick">—</div>
         </div>
       </div>
@@ -586,6 +607,14 @@
       <div id="hL"></div>
     </div>
   </div>
+
+  <!-- ====== THEMES ====== -->
+  <div id="t-themes" class="tcontent">
+    <div class="glass">
+      <div class="stitle"><span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg></span>Dark Themes</div>
+      <div class="tgrid" id="themeGrid"></div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->
@@ -594,6 +623,10 @@
   <div id="mB"></div>
   <div class="rt"><span>TOTAL</span><span class="rq" id="mT"></span></div>
   <button class="btn btn-p" style="margin-top:20px" onclick="cR()">Done</button>
+  <button class="btn btn-g" style="margin-top:8px" onclick="shareCard()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+    Share Card
+  </button>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -647,7 +680,8 @@ function calNext(){calDate=new Date(calDate.getFullYear(),calDate.getMonth()+1,1
 function updateDateInfo(){
   const opt={weekday:'short',day:'numeric',month:'short'};
   document.getElementById('calDrop').textContent=calSelected.toLocaleDateString('en-IN',opt);
-  const pick=new Date(calSelected);pick.setDate(pick.getDate()+4);
+  const pick=new Date(calSelected);pick.setDate(pick.getDate()+3);
+  if(pick.getDay()===0) pick.setDate(pick.getDate()+1);
   document.getElementById('calPick').textContent=pick.toLocaleDateString('en-IN',opt);
 }
 
@@ -697,7 +731,8 @@ function saveEntry(){
   MAIN.forEach((n,i)=>{if(mQ[i]>0)items.push({name:n,qty:mQ[i]})});
   OTH.forEach((n,i)=>{if(oQ[i]>0)items.push({name:n,qty:oQ[i]})});
   const dropD=calSelected.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-  const pickD=new Date(calSelected);pickD.setDate(pickD.getDate()+4);
+  const pickD=new Date(calSelected);pickD.setDate(pickD.getDate()+3);
+  if(pickD.getDay()===0) pickD.setDate(pickD.getDate()+1);
   const pickS=pickD.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
 
   const entry={id:Date.now(),bagNo:bag,dropDate:dropD,pickDate:pickS,items,totalPieces:total,images:photos.slice(0,3),time:new Date().toLocaleString('en-IN')};
@@ -705,8 +740,9 @@ function saveEntry(){
   showR(entry);resetAll();loadH();toast('Saved!');
 }
 
-// Receipt
+let _lastEntry=null;
 function showR(e){
+  _lastEntry=e;
   document.getElementById('mSub').textContent=`Bag #${e.bagNo} • Drop: ${e.dropDate} • Pick: ${e.pickDate}`;
   const b=document.getElementById('mB');b.innerHTML='';
   e.items.forEach(it=>{b.innerHTML+=`<div class="ri"><span class="rn">${it.name}</span><span class="rq">${it.qty}</span></div>`});
@@ -744,7 +780,8 @@ function stab(t){
   const tabs=document.querySelectorAll('.tab');
   if(t==='new'){tabs[0].classList.add('on');document.getElementById('t-new').classList.add('on')}
   else if(t==='chart'){tabs[1].classList.add('on');document.getElementById('t-chart').classList.add('on');rRadar();rStats()}
-  else{tabs[2].classList.add('on');document.getElementById('t-hist').classList.add('on');loadH()}
+  else if(t==='hist'){tabs[2].classList.add('on');document.getElementById('t-hist').classList.add('on');loadH()}
+  else if(t==='themes'){tabs[3].classList.add('on');document.getElementById('t-themes').classList.add('on');renderThemes()}
 }
 
 // Map
@@ -786,6 +823,196 @@ function toast(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 document.getElementById('rcO').addEventListener('click',function(e){if(e.target===this)cR()});
 
 // Init
+// ===== THEMES =====
+const THEMES=[
+  {id:'cosmic',name:'Cosmic Glass',bg:'#090a0f',bg2:'#1b2735',card:'rgba(10,12,20,0.65)',fg:'#ffffff',fgSub:'rgba(255,255,255,0.4)',border:'rgba(255,255,255,0.08)',accent:'rgba(255,255,255,0.55)',dots:['#090a0f','#1b2735','#ffffff','#555']},
+  {id:'earth',name:'Warm Earth',bg:'#262624',bg2:'#1a1915',card:'#30302e',fg:'#c3c0b6',fgSub:'#83827d',border:'#3e3e38',accent:'#d97757',dots:['#262624','#d97757','#c3c0b6','#3e3e38']},
+  {id:'crimson',name:'Crimson',bg:'#1c1917',bg2:'#292524',card:'#292524',fg:'#f5f5f4',fgSub:'#d6d3d1',border:'#44403c',accent:'#b91c1c',dots:['#1c1917','#b91c1c','#f5f5f4','#44403c']},
+  {id:'forest',name:'Forest',bg:'#1c2a1f',bg2:'#2d3a2e',card:'#2d3a2e',fg:'#f0ebe5',fgSub:'#d7cfc4',border:'#3e4a3d',accent:'#4caf50',dots:['#1c2a1f','#4caf50','#f0ebe5','#3e4a3d']},
+  {id:'midnight',name:'Midnight Gold',bg:'#181a24',bg2:'#23243a',card:'#23243a',fg:'#e6eaf3',fgSub:'#7a88a1',border:'#2d2e3e',accent:'#ffe066',dots:['#181a24','#ffe066','#3a5ba0','#2d2e3e']},
+  {id:'steel',name:'Steel Blue',bg:'#1c2433',bg2:'#2a3040',card:'#2a3040',fg:'#e5e5e5',fgSub:'#a3a3a3',border:'#3d4354',accent:'#e05d38',dots:['#1c2433','#e05d38','#86a7c8','#3d4354']}
+];
+
+function renderThemes(){
+  const grid=document.getElementById('themeGrid');
+  const cur=localStorage.getItem('lm-theme')||'cosmic';
+  grid.innerHTML='';
+  THEMES.forEach(t=>{
+    const active=t.id===cur?'active':'';
+    let dots=t.dots.map(c=>`<div class="tc-dot" style="background:${c}"></div>`).join('');
+    grid.innerHTML+=`<div class="tcard ${active}" style="background:${t.card};color:${t.fg};border-color:${active?'rgba(255,255,255,0.35)':'rgba(255,255,255,0.06)'}" onclick="applyTheme('${t.id}')">
+      <div class="tc-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-dots">${dots}</div>
+    </div>`;
+  });
+}
+
+function applyTheme(id){
+  const t=THEMES.find(x=>x.id===id);if(!t)return;
+  localStorage.setItem('lm-theme',id);
+  const r=document.documentElement.style;
+  // Body bg
+  r.setProperty('--t-bg',t.bg);
+  r.setProperty('--t-bg2',t.bg2);
+  document.body.style.backgroundColor=t.bg;
+  document.body.style.backgroundImage=`radial-gradient(ellipse at bottom,${t.bg2} 0%,${t.bg} 100%)`;
+  // Theme color meta
+  document.querySelector('meta[name=theme-color]').content=t.bg;
+  // Cards
+  document.querySelectorAll('.glass').forEach(el=>el.style.background=t.card);
+  document.querySelectorAll('.hc').forEach(el=>el.style.background=t.card);
+  document.querySelectorAll('.tabs').forEach(el=>el.style.background=t.card);
+  // Text
+  document.body.style.color=t.fg;
+  document.querySelectorAll('.tagline,.sl,.cpi-label,.cal-footer button,.map-s,.uhint,.hm,.hs,.chart-empty,.bar-name').forEach(el=>el.style.color=t.fgSub);
+  // Borders
+  document.querySelectorAll('.glass,.tabs,.hc,.crow,.qstep,.map-inner').forEach(el=>el.style.borderColor=t.border);
+  // Accent on SVG icons in section headers
+  document.querySelectorAll('.sec-ico svg').forEach(el=>el.setAttribute('stroke',t.accent));
+  // Modal
+  const modal=document.querySelector('.modal');
+  if(modal){modal.style.background=t.card;modal.style.borderColor=t.border}
+  // Overlay
+  const ov=document.getElementById('rcO');
+  if(ov)ov.style.background=`${t.bg}dd`;
+  // Toast
+  const tst=document.getElementById('toast');
+  if(tst){tst.style.background=t.card;tst.style.borderColor=t.border}
+  // Stars visibility
+  const showStars=id==='cosmic';
+  ['stars','stars2','stars3','horizon'].forEach(sid=>{
+    const el=document.getElementById(sid);
+    if(el)el.style.display=showStars?'block':'none';
+  });
+  // Re-render themes grid if visible
+  if(document.getElementById('t-themes').classList.contains('on'))renderThemes();
+}
+
+// ===== SHARE CARD =====
+function shareCard(){
+  if(!_lastEntry){toast('No entry to share');return}
+  const e=_lastEntry;
+  const t=THEMES.find(x=>x.id===(localStorage.getItem('lm-theme')||'cosmic'))||THEMES[0];
+
+  // Canvas dimensions
+  const W=480, padX=36, itemH=32;
+  const headerH=160, itemsStartY=headerH+20;
+  const totalItems=e.items.length;
+  const H=itemsStartY+totalItems*itemH+120;
+
+  const c=document.createElement('canvas');c.width=W*2;c.height=H*2;
+  const ctx=c.getContext('2d');ctx.scale(2,2);
+
+  // Background
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,t.bg2);grad.addColorStop(1,t.bg);
+  ctx.fillStyle=grad;roundRect(ctx,0,0,W,H,24);ctx.fill();
+
+  // Border
+  ctx.strokeStyle=t.border;ctx.lineWidth=1;
+  roundRect(ctx,0.5,0.5,W-1,H-1,24);ctx.stroke();
+
+  // Header section
+  ctx.fillStyle=t.fg;ctx.font='700 22px Inter,sans-serif';
+  ctx.fillText('Laundry Manager',padX,44);
+
+  ctx.fillStyle=t.fgSub;ctx.font='400 12px Inter,sans-serif';
+  ctx.fillText(`Bag #${e.bagNo}`,padX,68);
+
+  // Date badges
+  const dropTxt=`Drop: ${e.dropDate}`;
+  const pickTxt=`Pick: ${e.pickDate}`;
+  ctx.font='600 11px Inter,sans-serif';
+
+  // Drop badge
+  ctx.fillStyle=t.border;
+  roundRect(ctx,padX,82,ctx.measureText(dropTxt).width+20,26,8);ctx.fill();
+  ctx.fillStyle=t.fg;ctx.fillText(dropTxt,padX+10,100);
+
+  // Pick badge
+  const dropW=ctx.measureText(dropTxt).width+28;
+  ctx.fillStyle=t.border;
+  roundRect(ctx,padX+dropW,82,ctx.measureText(pickTxt).width+20,26,8);ctx.fill();
+  ctx.fillStyle=t.fg;ctx.fillText(pickTxt,padX+dropW+10,100);
+
+  // Arrow between dates
+  ctx.fillStyle=t.fgSub;ctx.font='400 11px Inter,sans-serif';
+  ctx.fillText('→',padX+dropW-12,100);
+
+  // Divider
+  ctx.fillStyle=t.border;
+  ctx.fillRect(padX,headerH,W-padX*2,1);
+
+  // Items header
+  let y=itemsStartY;
+  ctx.fillStyle=t.fgSub;ctx.font='700 9px Inter,sans-serif';
+  ctx.fillText('ITEM',padX,y);
+  ctx.fillText('QTY',W-padX-20,y);
+  y+=16;
+
+  // Items list
+  ctx.font='400 14px Inter,sans-serif';
+  e.items.forEach((it,i)=>{
+    // Alternate row bg
+    if(i%2===0){
+      ctx.fillStyle=t.bg2+'33';
+      roundRect(ctx,padX-8,y-4,W-padX*2+16,itemH,6);ctx.fill();
+    }
+    ctx.fillStyle=t.fg;
+    ctx.font='400 14px Inter,sans-serif';
+    ctx.fillText(it.name,padX,y+16);
+    ctx.font='700 14px Inter,sans-serif';
+    const qTxt=String(it.qty);
+    ctx.fillText(qTxt,W-padX-ctx.measureText(qTxt).width,y+16);
+    y+=itemH;
+  });
+
+  // Total divider
+  y+=12;
+  ctx.fillStyle=t.border;
+  ctx.fillRect(padX,y,W-padX*2,1);
+  y+=20;
+
+  // Total
+  ctx.fillStyle=t.fg;ctx.font='700 18px Inter,sans-serif';
+  ctx.fillText('TOTAL',padX,y+4);
+  const totalTxt=e.totalPieces+' pcs';
+  ctx.font='800 22px Inter,sans-serif';
+  ctx.fillStyle=t.accent;
+  ctx.fillText(totalTxt,W-padX-ctx.measureText(totalTxt).width,y+4);
+
+  // Watermark
+  y+=36;
+  ctx.fillStyle=t.fgSub;ctx.font='400 9px Inter,sans-serif';
+  ctx.fillText('Generated by Laundry Manager',W/2-ctx.measureText('Generated by Laundry Manager').width/2,y);
+
+  // Convert to blob and share
+  c.toBlob(async blob=>{
+    const file=new File([blob],'laundry-receipt.png',{type:'image/png'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],title:'Laundry Receipt',text:`Bag #${e.bagNo} - ${e.totalPieces} pieces`})}catch(err){}
+    }else{
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+      a.download=`laundry-${e.bagNo}-${Date.now()}.png`;a.click();
+      URL.revokeObjectURL(a.href);
+      toast('Card saved!');
+    }
+  },'image/png');
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+// Load saved theme
+(function(){const saved=localStorage.getItem('lm-theme');if(saved&&saved!=='cosmic')applyTheme(saved)})();
+
 renderCal();rg('mG',MAIN,mQ,'m');rg('oG',OTH,oQ,'o');uS();loadH();
 </script>
 </body>
