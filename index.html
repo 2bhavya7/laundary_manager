@@ -667,6 +667,7 @@
     .btn,.tab-trigger,.tab-panel-item,.crow,.cal-day,.hc,.map-card,.tcard,.qstep button,.cal-nav button,.uzone,.cal-footer button,.hd{
       touch-action:manipulation;-webkit-tap-highlight-color:transparent;
     }
+    .glass{contain:content}
     @media(pointer:coarse){
       .bb8-toggle{--toggle-size:16px}
       .bb8-toggle-wrap{padding:20px 0}
@@ -678,6 +679,37 @@
       .cal-day .day-num{width:42px;height:42px;font-size:14px}
       .hc{padding:16px}
       .btn{padding:16px 18px;font-size:14px}
+      /* Kill expensive backdrop-filter on mobile */
+      .glass,.tab-trigger,.tab-panel,.modal,.hc,.toast,.btn-p,.qstep,.map-inner,.tcard,.orbit-center,.orbit-dot,.lb-ov,.header-badge,.cal-pick-info,.uzone{
+        -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+      }
+      /* Solid backgrounds for light mode on mobile */
+      body.light-mode .glass{background:rgba(255,255,255,0.88)!important}
+      body.light-mode .tab-trigger{background:rgba(255,255,255,0.88)!important}
+      body.light-mode .tab-panel{background:rgba(255,255,255,0.92)!important}
+      body.light-mode .modal{background:rgba(255,255,255,0.95)!important}
+      body.light-mode .hc{background:rgba(255,255,255,0.85)!important}
+      body.light-mode .toast{background:rgba(255,255,255,0.92)!important}
+      body.light-mode .qstep{background:rgba(255,255,255,0.8)!important}
+      body.light-mode .crow{background:rgba(255,255,255,0.5)!important}
+      body.light-mode .crow.has{background:rgba(255,255,255,0.65)!important}
+      body.light-mode .tcard{background:rgba(255,255,255,0.7)!important}
+      body.light-mode .orbit-center{background:rgba(255,255,255,0.7)!important}
+      body.light-mode .orbit-dot{background:rgba(255,255,255,0.8)!important}
+      body.light-mode .lb-ov{background:rgba(255,255,255,0.85)!important}
+      /* GPU-friendly transitions */
+      *{-webkit-transform:translateZ(0)}
+      .glass,.hc,.crow,.btn,.tab-trigger,.cal-day .day-num,.tcard{
+        transition:transform 0.15s ease,opacity 0.15s ease,border-color 0.2s ease!important;
+        will-change:transform;
+      }
+      /* Slow down orbit to save GPU */
+      .orbit-ring.r1{animation-duration:40s}
+      .orbit-ring.r2{animation-duration:60s}
+      /* Reduce star animation speed */
+      #stars{animation-duration:100s!important}
+      #stars2{animation-duration:200s!important}
+      #stars3{animation-duration:300s!important}
     }
   </style>
 </head>
@@ -945,11 +977,13 @@ const MX_M=10,MX_O=5;
 let mQ=Array(MAIN.length).fill(0),oQ=Array(OTH.length).fill(0),photos=[];
 
 // Stars
+const isMobile='ontouchstart' in window||navigator.maxTouchPoints>0;
 function ss(n,color){let s=[];for(let i=0;i<n;i++)s.push(`${~~(Math.random()*2000)}px ${~~(Math.random()*2000)}px ${color||'#FFF'}`);return s.join(', ')}
 function recolorStars(color){
-  document.getElementById('stars').style.boxShadow=ss(700,color);
-  document.getElementById('stars2').style.boxShadow=ss(200,color);
-  document.getElementById('stars3').style.boxShadow=ss(100,color);
+  const f=isMobile?0.3:1;
+  document.getElementById('stars').style.boxShadow=ss(Math.round(700*f),color);
+  document.getElementById('stars2').style.boxShadow=ss(Math.round(200*f),color);
+  document.getElementById('stars3').style.boxShadow=ss(Math.round(100*f),color);
 }
 recolorStars('#FFF');
 
