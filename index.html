@@ -599,7 +599,6 @@
     .bb8:hover .bb8__head::after{background-position:0 0!important}
 
     /* ===== LIGHT MODE (structural only — colors handled by JS) ===== */
-    body.light-mode #stars,body.light-mode #stars2,body.light-mode #stars3{display:none}
     body.light-mode #horizon{background:linear-gradient(to top,rgba(0,0,0,0.03),transparent)}
     body.light-mode .glass::before{box-shadow:inset 1px 1px 0 0 rgba(255,255,255,0.8),inset -1px -1px 0 0 rgba(0,0,0,0.03)}
     body.light-mode .glass{box-shadow:0 2px 12px rgba(0,0,0,0.06)}
@@ -1251,8 +1250,15 @@ function applyTheme(id){
   // Toast
   const tst=document.getElementById('toast');
   if(tst){tst.style.background=isLight?'rgba(255,255,255,0.95)':card;tst.style.borderColor=border;tst.style.color=fg}
-  // Stars
-  if(!isLight){recolorStars(accent);document.getElementById('horizon').style.background=`linear-gradient(to top,${accent}11,transparent)`}
+  // Stars — visible in both modes, tinted differently
+  if(isLight){
+    const starColor=blend(accentHex,0.65);
+    recolorStars(starColor);
+    document.getElementById('horizon').style.background=`linear-gradient(to top,${accentHex}15,transparent)`;
+  }else{
+    recolorStars(accent);
+    document.getElementById('horizon').style.background=`linear-gradient(to top,${accent}11,transparent)`;
+  }
   // Theme grid
   if(document.getElementById('t-themes').classList.contains('on'))renderThemes();
 }
