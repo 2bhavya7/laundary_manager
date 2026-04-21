@@ -598,117 +598,29 @@
     .bb8:hover .bb8__antenna:nth-child(1){right:0.938em!important}
     .bb8:hover .bb8__head::after{background-position:0 0!important}
 
-    /* ===== LIGHT MODE ===== */
-    body.light-mode{
-      background-color:#f0f1f5!important;
-      background-image:linear-gradient(135deg,#e8eaf0 0%,#f5f6fa 50%,#e0e4ec 100%)!important;
-      color:#1a1a2e!important;
+    /* ===== LIGHT MODE (structural only — colors handled by JS) ===== */
+    body.light-mode #stars,body.light-mode #stars2,body.light-mode #stars3{display:none}
+    body.light-mode #horizon{background:linear-gradient(to top,rgba(0,0,0,0.03),transparent)}
+    body.light-mode .glass::before{box-shadow:inset 1px 1px 0 0 rgba(255,255,255,0.8),inset -1px -1px 0 0 rgba(0,0,0,0.03)}
+    body.light-mode .glass{box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+    body.light-mode ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1)}
+
+    /* ===== MOBILE SMOOTHNESS ===== */
+    .btn,.tab-trigger,.tab-panel-item,.crow,.cal-day,.hc,.map-card,.tcard,.qstep button,.cal-nav button,.uzone,.cal-footer button,.hd{
+      touch-action:manipulation;-webkit-tap-highlight-color:transparent;
     }
-    body.light-mode #stars,body.light-mode #stars2,body.light-mode #stars3{display:none!important}
-    body.light-mode #horizon{background:linear-gradient(to top,rgba(0,0,0,0.03),transparent)!important}
-    body.light-mode .glass{
-      background:rgba(255,255,255,0.75)!important;border-color:rgba(0,0,0,0.08)!important;
-      box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    @media(pointer:coarse){
+      .bb8-toggle{--toggle-size:16px}
+      .bb8-toggle-wrap{padding:20px 0}
+      .tgrid{gap:12px}
+      .cgrid{gap:6px}
+      .crow{padding:12px 14px}
+      .qstep button{width:44px;height:44px;font-size:20px}
+      .qstep .qv{width:34px;font-size:14px}
+      .cal-day .day-num{width:42px;height:42px;font-size:14px}
+      .hc{padding:16px}
+      .btn{padding:16px 18px;font-size:14px}
     }
-    body.light-mode .glass:hover{border-color:rgba(0,0,0,0.14)!important}
-    body.light-mode .glass::before{box-shadow:inset 1px 1px 0 0 rgba(255,255,255,0.8),inset -1px -1px 0 0 rgba(0,0,0,0.03)!important}
-    body.light-mode .header h1{color:#1a1a2e!important}
-    body.light-mode .header .tagline,body.light-mode .btl-sub{color:rgba(0,0,0,0.45)!important}
-    body.light-mode .header-badge{color:rgba(0,0,0,0.5)!important;border-color:rgba(0,0,0,0.1)!important;background:rgba(0,0,0,0.04)}
-    body.light-mode .stitle{color:#1a1a2e!important}
-    body.light-mode .sec-ico svg{stroke:rgba(0,0,0,0.45)!important}
-    body.light-mode .badge{background:rgba(0,0,0,0.06)!important;border-color:rgba(0,0,0,0.1)!important;color:rgba(0,0,0,0.5)!important}
-    body.light-mode .cal-month{color:#1a1a2e!important}
-    body.light-mode .cal-nav button{background:rgba(0,0,0,0.06)!important;color:rgba(0,0,0,0.6)!important}
-    body.light-mode .cal-day .day-label{color:rgba(0,0,0,0.4)!important}
-    body.light-mode .cal-day .day-num{color:rgba(0,0,0,0.7)!important}
-    body.light-mode .cal-day .day-num:hover{background:rgba(0,0,0,0.06)!important}
-    body.light-mode .cal-day.selected .day-num{background:rgba(0,0,0,0.08)!important;color:#1a1a2e!important;border:1px solid rgba(0,0,0,0.15)!important;box-shadow:0 2px 8px rgba(0,0,0,0.06)!important}
-    body.light-mode .cal-day.today .day-num::after{background:rgba(0,0,0,0.4)!important}
-    body.light-mode .cal-pick-info{background:rgba(0,0,0,0.03)!important;border-color:rgba(0,0,0,0.06)!important}
-    body.light-mode .cpi-label{color:rgba(0,0,0,0.45)!important}
-    body.light-mode .cpi-val{color:#1a1a2e!important}
-    body.light-mode .cal-div{background:rgba(0,0,0,0.06)!important}
-    body.light-mode .cal-footer button{color:rgba(0,0,0,0.5)!important}
-    body.light-mode .cal-footer .cal-new{background:rgba(0,0,0,0.04)!important;border-color:rgba(0,0,0,0.08)!important;color:rgba(0,0,0,0.7)!important}
-    body.light-mode .fgrp label{color:rgba(0,0,0,0.45)!important}
-    body.light-mode .fgrp input{background:rgba(0,0,0,0.03)!important;border-color:rgba(0,0,0,0.1)!important;color:#1a1a2e!important}
-    body.light-mode .fgrp input::placeholder{color:rgba(0,0,0,0.25)!important}
-    body.light-mode .fgrp input:focus{border-color:rgba(0,0,0,0.2)!important;box-shadow:0 0 0 3px rgba(0,0,0,0.05)!important}
-    body.light-mode .crow{background:rgba(0,0,0,0.02)!important;border-color:rgba(0,0,0,0.04)!important}
-    body.light-mode .crow:hover{background:rgba(0,0,0,0.05)!important;border-color:rgba(0,0,0,0.08)!important}
-    body.light-mode .crow.has{border-color:rgba(0,0,0,0.15)!important;background:rgba(0,0,0,0.04)!important}
-    body.light-mode .cname{color:#1a1a2e!important}
-    body.light-mode .cnum{background:rgba(0,0,0,0.05)!important;color:rgba(0,0,0,0.4)!important}
-    body.light-mode .crow.has .cnum{background:rgba(0,0,0,0.1)!important;border:1px solid rgba(0,0,0,0.15)!important;color:#1a1a2e!important}
-    body.light-mode .qstep{border-color:rgba(0,0,0,0.1)!important;background:rgba(255,255,255,0.6)!important}
-    body.light-mode .qstep button{color:rgba(0,0,0,0.5)!important}
-    body.light-mode .qstep button:hover{background:rgba(0,0,0,0.06)!important;color:#1a1a2e!important}
-    body.light-mode .qstep .qv{color:#1a1a2e!important;border-color:rgba(0,0,0,0.06)!important}
-    body.light-mode .sl{color:rgba(0,0,0,0.45)!important}
-    body.light-mode .sv{color:#1a1a2e!important}
-    body.light-mode .sv.big{color:#1a1a2e!important}
-    body.light-mode .divd{background:linear-gradient(90deg,transparent,rgba(0,0,0,0.08),transparent)!important}
-    body.light-mode .sr+.sr{border-top-color:rgba(0,0,0,0.06)!important}
-    body.light-mode .btn-p{background:rgba(0,0,0,0.08)!important;color:#1a1a2e!important;border-color:rgba(0,0,0,0.12)!important;box-shadow:0 2px 10px rgba(0,0,0,0.04)!important}
-    body.light-mode .btn-p:hover{background:rgba(0,0,0,0.12)!important;box-shadow:0 4px 16px rgba(0,0,0,0.06)!important}
-    body.light-mode .btn-g{background:rgba(0,0,0,0.04)!important;color:rgba(0,0,0,0.6)!important;border-color:rgba(0,0,0,0.08)!important}
-    body.light-mode .btn-g:hover{background:rgba(0,0,0,0.08)!important}
-    body.light-mode .tab-trigger{background:rgba(255,255,255,0.75)!important;border-color:rgba(0,0,0,0.08)!important;color:#1a1a2e!important}
-    body.light-mode .tab-trigger:hover,body.light-mode .tab-trigger.open{background:rgba(255,255,255,0.9)!important;border-color:rgba(0,0,0,0.12)!important}
-    body.light-mode .tab-panel{background:rgba(255,255,255,0.95)!important;border-color:rgba(0,0,0,0.08)!important}
-    body.light-mode .tab-panel-item{color:rgba(0,0,0,0.5)!important}
-    body.light-mode .tab-panel-item:hover{background:rgba(0,0,0,0.04)!important;color:#1a1a2e!important}
-    body.light-mode .tab-panel-sep{background:rgba(0,0,0,0.06)!important}
-    body.light-mode .uzone{border-color:rgba(0,0,0,0.12)!important}
-    body.light-mode .uzone:hover{border-color:rgba(0,0,0,0.25)!important;background:rgba(0,0,0,0.02)!important}
-    body.light-mode .ulbl{color:rgba(0,0,0,0.6)!important}
-    body.light-mode .uhint{color:rgba(0,0,0,0.35)!important}
-    body.light-mode .ithumb{border-color:rgba(0,0,0,0.08)!important}
-    body.light-mode .map-inner{background:rgba(255,255,255,0.7)!important;border-color:rgba(0,0,0,0.06)!important}
-    body.light-mode .map-t{color:#1a1a2e!important}
-    body.light-mode .map-s{color:rgba(0,0,0,0.4)!important}
-    body.light-mode .map-ico{background:rgba(0,0,0,0.05)!important}
-    body.light-mode .map-ico svg{stroke:rgba(0,0,0,0.45)!important}
-    body.light-mode .map-live{background:rgba(0,0,0,0.05)!important;color:rgba(0,0,0,0.5)!important}
-    body.light-mode .map-dot{background:rgba(0,0,0,0.4)!important}
-    body.light-mode .map-line{background:linear-gradient(90deg,rgba(0,0,0,0.15),rgba(0,0,0,0.05),transparent)!important}
-    body.light-mode .map-area{background:rgba(0,0,0,0.02)!important}
-    body.light-mode .map-coords{color:rgba(0,0,0,0.35)!important;border-top-color:rgba(0,0,0,0.06)!important}
-    body.light-mode .hc{background:rgba(255,255,255,0.7)!important;border-color:rgba(0,0,0,0.06)!important}
-    body.light-mode .hc:hover{background:rgba(255,255,255,0.9)!important;border-color:rgba(0,0,0,0.1)!important}
-    body.light-mode .hb{color:#1a1a2e!important}
-    body.light-mode .hm{color:rgba(0,0,0,0.4)!important}
-    body.light-mode .ht{color:#1a1a2e!important}
-    body.light-mode .hs{color:rgba(0,0,0,0.4)!important}
-    body.light-mode .empty{color:rgba(0,0,0,0.35)!important}
-    body.light-mode .chart-empty{color:rgba(0,0,0,0.35)!important}
-    body.light-mode .tcard{border-color:rgba(0,0,0,0.08)!important}
-    body.light-mode .tcard.active{border-color:rgba(0,0,0,0.3)!important}
-    body.light-mode .tcard .tc-check{background:rgba(0,0,0,0.1)!important;border-color:rgba(0,0,0,0.2)!important}
-    body.light-mode .tcard .tc-check svg{stroke:#1a1a2e!important}
-    body.light-mode .toast{background:rgba(255,255,255,0.95)!important;border-color:rgba(0,0,0,0.08)!important;color:#1a1a2e!important;box-shadow:0 4px 20px rgba(0,0,0,0.1)!important}
-    body.light-mode .ov{background:rgba(255,255,255,0.7)!important}
-    body.light-mode .modal{background:rgba(255,255,255,0.96)!important;border-color:rgba(0,0,0,0.08)!important;box-shadow:0 20px 60px rgba(0,0,0,0.12)!important}
-    body.light-mode .mh h2{color:#1a1a2e!important}
-    body.light-mode .mh .ms{color:rgba(0,0,0,0.45)!important}
-    body.light-mode .ri{border-bottom-color:rgba(0,0,0,0.06)!important}
-    body.light-mode .rn{color:rgba(0,0,0,0.5)!important}
-    body.light-mode .rq{color:#1a1a2e!important}
-    body.light-mode .rt{border-top-color:rgba(0,0,0,0.08)!important}
-    body.light-mode .rt .rq{color:#1a1a2e!important}
-    body.light-mode .orbit-center{background:rgba(0,0,0,0.05)!important;border-color:rgba(0,0,0,0.08)!important}
-    body.light-mode .orbit-ring{border-color:rgba(0,0,0,0.06)!important}
-    body.light-mode .orbit-dot{background:rgba(255,255,255,0.85)!important;border-color:rgba(0,0,0,0.1)!important}
-    body.light-mode .bar-name{color:rgba(0,0,0,0.5)!important}
-    body.light-mode .bar-qty{color:#1a1a2e!important}
-    body.light-mode .bar-track{background:rgba(0,0,0,0.06)!important}
-    body.light-mode .bar-fill{background:linear-gradient(90deg,rgba(0,0,0,0.2),rgba(0,0,0,0.08))!important}
-    body.light-mode .btl-title{color:#1a1a2e!important}
-    body.light-mode .tc-name{color:#1a1a2e!important}
-    body.light-mode .lb-ov{background:rgba(255,255,255,0.85)!important}
-    body.light-mode .lb-close{background:rgba(0,0,0,0.1)!important;border-color:rgba(0,0,0,0.15)!important;color:#1a1a2e!important}
-    body.light-mode ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1)!important}
   </style>
 </head>
 <body>
@@ -1251,7 +1163,8 @@ const THEMES=[
   {id:'steel',name:'Steel Blue',bg:'#1c2433',bg2:'#2a3040',card:'#2a3040',fg:'#e5e5e5',fgSub:'#a3a3a3',border:'#3d4354',accent:'#e05d38',dots:['#1c2433','#e05d38','#86a7c8','#3d4354']},
   {id:'teal',name:'Teal Terminal',bg:'#0a1a20',bg2:'#0c2025',card:'#0c2025',fg:'#4de8e8',fgSub:'#36a5a5',border:'#164955',accent:'#4de8e8',dots:['#0a1a20','#4de8e8','#164955','#06858e']},
   {id:'moss',name:'Forest Moss',bg:'#1a2318',bg2:'#243020',card:'#2a3524',fg:'#e8f5bd',fgSub:'#a2cb8b',border:'#3d5030',accent:'#5b7e3c',dots:['#1a2318','#5b7e3c','#a2cb8b','#c44545']},
-  {id:'vintage',name:'Vintage Rose',bg:'#1a2528',bg2:'#1f2e32',card:'#243438',fg:'#f6f09f',fgSub:'#bed4cb',border:'#3a4e52',accent:'#87b6bc',dots:['#1a2528','#87b6bc','#f6f09f','#b35656']}
+  {id:'vintage',name:'Vintage Rose',bg:'#1a2528',bg2:'#1f2e32',card:'#243438',fg:'#f6f09f',fgSub:'#bed4cb',border:'#3a4e52',accent:'#87b6bc',dots:['#1a2528','#87b6bc','#f6f09f','#b35656']},
+  {id:'coastal',name:'Coastal',bg:'#161e28',bg2:'#1c2a38',card:'#1f2d3a',fg:'#f3e3d0',fgSub:'#d2c4b4',border:'#2e3e4e',accent:'#81a6c6',dots:['#161e28','#81a6c6','#aacddc','#d2c4b4']}
 ];
 
 function renderThemes(){
@@ -1269,45 +1182,78 @@ function renderThemes(){
   });
 }
 
+// Color helpers
+function htr(h){h=h.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];return[parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)]}
+function rth(r,g,b){return'#'+[r,g,b].map(c=>Math.round(Math.min(255,Math.max(0,c))).toString(16).padStart(2,'0')).join('')}
+function blend(hex,amt){try{const[r,g,b]=htr(hex);return rth(r+(255-r)*amt,g+(255-g)*amt,b+(255-b)*amt)}catch(e){return'#f0f0f0'}}
+function darkenH(hex,amt){try{const[r,g,b]=htr(hex);return rth(r*(1-amt),g*(1-amt),b*(1-amt))}catch(e){return'#333'}}
+function getHex(c){if(c.startsWith('#'))return c;const m=c.match(/\d+/g);if(m&&m.length>=3)return rth(+m[0],+m[1],+m[2]);return'#888888'}
+
 function applyTheme(id){
   const t=THEMES.find(x=>x.id===id);if(!t)return;
   localStorage.setItem('lm-theme',id);
-  const r=document.documentElement.style;
+  const isLight=document.body.classList.contains('light-mode');
+  const accentHex=getHex(t.accent);
+
+  // Derive colors based on mode
+  let bg,bg2,card,fg,fgSub,border,accent;
+  if(isLight){
+    bg=blend(accentHex,0.92);
+    bg2=blend(accentHex,0.88);
+    card='rgba(255,255,255,0.78)';
+    fg=darkenH(accentHex,0.55);
+    fgSub=blend(fg,0.35);
+    border=blend(accentHex,0.72);
+    accent=accentHex;
+  }else{
+    bg=t.bg;bg2=t.bg2;card=t.card;fg=t.fg;fgSub=t.fgSub;border=t.border;accent=t.accent;
+  }
+
   // Body bg
-  r.setProperty('--t-bg',t.bg);
-  r.setProperty('--t-bg2',t.bg2);
-  document.body.style.backgroundColor=t.bg;
-  document.body.style.backgroundImage=`radial-gradient(ellipse at bottom,${t.bg2} 0%,${t.bg} 100%)`;
-  // Theme color meta
-  document.querySelector('meta[name=theme-color]').content=t.bg;
+  document.body.style.backgroundColor=bg;
+  if(isLight){
+    document.body.style.backgroundImage=`linear-gradient(135deg,${bg} 0%,${bg2} 50%,${bg} 100%)`;
+    document.body.style.backgroundAttachment='fixed';
+  }else{
+    document.body.style.backgroundImage=`radial-gradient(ellipse at bottom,${bg2} 0%,${bg} 100%)`;
+    document.body.style.backgroundAttachment='fixed';
+  }
+  document.querySelector('meta[name=theme-color]').content=bg;
+
   // Cards
-  document.querySelectorAll('.glass').forEach(el=>el.style.background=t.card);
-  document.querySelectorAll('.hc').forEach(el=>el.style.background=t.card);
-  // Tab selector
+  document.querySelectorAll('.glass').forEach(el=>{el.style.background=card;el.style.borderColor=border});
+  document.querySelectorAll('.hc').forEach(el=>{el.style.background=card;el.style.borderColor=border});
+  // Tab
   const trigger=document.getElementById('tabTrigger');
-  if(trigger){trigger.style.background=t.card;trigger.style.borderColor=t.border}
+  if(trigger){trigger.style.background=card;trigger.style.borderColor=border;trigger.style.color=fg}
   const panel=document.getElementById('tabPanel');
-  if(panel){panel.style.background=t.card;panel.style.borderColor=t.border}
-  // Text
-  document.body.style.color=t.fg;
-  document.querySelectorAll('.tagline,.sl,.cpi-label,.cal-footer button,.map-s,.uhint,.hm,.hs,.chart-empty,.bar-name').forEach(el=>el.style.color=t.fgSub);
-  // Borders
-  document.querySelectorAll('.glass,.hc,.crow,.qstep,.map-inner').forEach(el=>el.style.borderColor=t.border);
-  // Accent on SVG icons in section headers
-  document.querySelectorAll('.sec-ico svg').forEach(el=>el.setAttribute('stroke',t.accent));
+  if(panel){panel.style.background=isLight?'rgba(255,255,255,0.95)':card;panel.style.borderColor=border}
+  // Text colors
+  document.body.style.color=fg;
+  document.querySelectorAll('.header h1,.cal-month,.stitle,.cname,.sv,.sv.big,.hb,.ht,.mh h2,.btl-title').forEach(el=>el.style.color=fg);
+  document.querySelectorAll('.tagline,.sl,.cpi-label,.cal-footer button,.map-s,.uhint,.hm,.hs,.chart-empty,.bar-name,.rn,.mh .ms,.fgrp label,.badge,.empty,.cal-day .day-label,.btl-sub,.map-coords,.tab-panel-item,.header-badge').forEach(el=>el.style.color=fgSub);
+  // Input colors
+  document.querySelectorAll('.fgrp input').forEach(el=>{el.style.background=isLight?'rgba(0,0,0,0.03)':t.card||'rgba(255,255,255,0.04)';el.style.borderColor=border;el.style.color=fg});
+  // Interactive elements
+  document.querySelectorAll('.crow,.qstep,.map-inner,.cal-pick-info').forEach(el=>el.style.borderColor=border);
+  document.querySelectorAll('.qstep button,.cal-nav button,.cal-day .day-num').forEach(el=>el.style.color=isLight?fgSub:fg);
+  // Buttons
+  document.querySelectorAll('.btn-p').forEach(el=>{el.style.background=isLight?blend(accentHex,0.75):t.card||'rgba(255,255,255,0.10)';el.style.color=fg;el.style.borderColor=border});
+  document.querySelectorAll('.btn-g').forEach(el=>{el.style.background=isLight?'rgba(0,0,0,0.04)':'rgba(255,255,255,0.04)';el.style.color=fgSub;el.style.borderColor=border});
+  // Accent SVGs
+  document.querySelectorAll('.sec-ico svg').forEach(el=>el.setAttribute('stroke',isLight?fgSub:accent));
   // Modal
   const modal=document.querySelector('.modal');
-  if(modal){modal.style.background=t.card;modal.style.borderColor=t.border}
+  if(modal){modal.style.background=isLight?'rgba(255,255,255,0.96)':card;modal.style.borderColor=border;modal.style.color=fg}
   // Overlay
   const ov=document.getElementById('rcO');
-  if(ov)ov.style.background=`${t.bg}dd`;
+  if(ov)ov.style.background=isLight?'rgba(255,255,255,0.7)':`${bg}dd`;
   // Toast
   const tst=document.getElementById('toast');
-  if(tst){tst.style.background=t.card;tst.style.borderColor=t.border}
-  // Stars — always visible, recolor to theme accent
-  recolorStars(t.accent);
-  document.getElementById('horizon').style.background=`linear-gradient(to top,${t.accent}11,transparent)`;
-  // Re-render themes grid if visible
+  if(tst){tst.style.background=isLight?'rgba(255,255,255,0.95)':card;tst.style.borderColor=border;tst.style.color=fg}
+  // Stars
+  if(!isLight){recolorStars(accent);document.getElementById('horizon').style.background=`linear-gradient(to top,${accent}11,transparent)`}
+  // Theme grid
   if(document.getElementById('t-themes').classList.contains('on'))renderThemes();
 }
 
@@ -1440,19 +1386,18 @@ function toggleLightDark(){
     localStorage.setItem('lm-lightmode','true');
     document.getElementById('modeLabel').textContent='Light Side';
     document.getElementById('modeSub').textContent='Day mode is active';
-    document.querySelector('meta[name=theme-color]').content='#f0f1f5';
   }else{
     document.body.classList.remove('light-mode');
     localStorage.setItem('lm-lightmode','false');
     document.getElementById('modeLabel').textContent='Dark Side';
     document.getElementById('modeSub').textContent='Night mode is active';
-    // Restore theme color
-    const t=THEMES.find(x=>x.id===(localStorage.getItem('lm-theme')||'cosmic'))||THEMES[0];
-    document.querySelector('meta[name=theme-color]').content=t.bg;
   }
+  // Re-apply current theme with correct mode colors
+  const curTheme=localStorage.getItem('lm-theme')||'cosmic';
+  applyTheme(curTheme);
 }
 
-// Load saved light/dark preference
+// Load saved preferences and apply
 (function(){
   const isLight=localStorage.getItem('lm-lightmode')==='true';
   if(isLight){
@@ -1461,10 +1406,10 @@ function toggleLightDark(){
     document.getElementById('modeLabel').textContent='Light Side';
     document.getElementById('modeSub').textContent='Day mode is active';
   }
+  // Always apply theme (handles both light and dark mode)
+  const saved=localStorage.getItem('lm-theme')||'cosmic';
+  applyTheme(saved);
 })();
-
-// Load saved theme
-(function(){const saved=localStorage.getItem('lm-theme');if(saved&&saved!=='cosmic')applyTheme(saved)})();
 
 renderCal();rg('mG',MAIN,mQ,'m');rg('oG',OTH,oQ,'o');uS();loadH();
 </script>
