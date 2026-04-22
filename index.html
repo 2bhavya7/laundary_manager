@@ -680,42 +680,98 @@
       .btn{padding:16px 18px;font-size:14px}
     }
 
-    /* ===== FULLSCREEN BUTTON ===== */
-    .fs-btn{
-      position:fixed;bottom:24px;right:24px;z-index:999;
-      width:50px;height:50px;border-radius:50%;
-      background:rgba(10,12,20,0.75);
-      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-      border:1px solid rgba(255,255,255,0.12);
-      color:rgba(255,255,255,0.7);
-      cursor:pointer;display:flex;align-items:center;justify-content:center;
-      box-shadow:0 4px 20px rgba(0,0,0,0.3),0 0 0 1px rgba(255,255,255,0.04) inset;
-      transition:all 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+    /* ===== BLUETOOTH KEY FULLSCREEN BUTTON ===== */
+    .bk-wrap{
+      position:fixed;bottom:20px;right:20px;z-index:999;
+      --size:62px;width:var(--size);height:var(--size);
       touch-action:manipulation;-webkit-tap-highlight-color:transparent;
     }
-    .fs-btn:hover{background:rgba(20,22,40,0.85);border-color:rgba(255,255,255,0.22);color:#fff;transform:scale(1.08);box-shadow:0 6px 28px rgba(0,0,0,0.4),0 0 14px rgba(255,255,255,0.05)}
-    .fs-btn:active{transform:scale(0.95)}
-    .fs-btn svg{width:22px;height:22px;transition:transform 0.3s ease}
-    .fs-btn.active{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);color:#fff;}
-    .fs-btn .fs-ico-exit{display:none}
-    .fs-btn.active .fs-ico-enter{display:none}
-    .fs-btn.active .fs-ico-exit{display:block}
-    .fs-btn-label{
-      position:absolute;right:60px;top:50%;transform:translateY(-50%);
-      background:rgba(10,12,20,0.85);backdrop-filter:blur(12px);
-      border:1px solid rgba(255,255,255,0.10);border-radius:10px;
-      padding:6px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);
-      white-space:nowrap;opacity:0;pointer-events:none;
-      transition:opacity 0.25s ease,transform 0.25s ease;
-      transform:translateY(-50%) translateX(8px);
+    .bk-wrap .wrap{display:block;width:100%;height:100%;position:relative;cursor:pointer}
+    .bk-wrap .wrap input{display:none}
+    .bk-wrap .button{
+      width:100%;height:100%;border-radius:14px;border:none;cursor:pointer;
+      position:relative;padding:0;
+      background:linear-gradient(180deg,#3a3a3a 0%,#2a2a2a 40%,#1a1a1a 100%);
+      box-shadow:0 4px 12px rgba(0,0,0,0.5),0 1px 0 rgba(255,255,255,0.06) inset,0 -2px 4px rgba(0,0,0,0.4);
+      transition:all 0.15s ease;
     }
-    .fs-btn:hover .fs-btn-label{opacity:1;transform:translateY(-50%) translateX(0)}
-    body.light-mode .fs-btn{background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.5);color:rgba(0,0,0,0.5);box-shadow:0 4px 20px rgba(0,0,0,0.08),inset 0 1px 0 rgba(255,255,255,0.7)}
-    body.light-mode .fs-btn:hover{background:rgba(255,255,255,0.8);color:rgba(0,0,0,0.7)}
-    body.light-mode .fs-btn.active{background:rgba(0,0,0,0.08);color:rgba(0,0,0,0.6)}
-    body.light-mode .fs-btn-label{background:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.5);color:rgba(0,0,0,0.6)}
-    @media(pointer:coarse){.fs-btn{width:54px;height:54px;bottom:20px;right:16px}}
-    @media(max-width:400px){.fs-btn{width:48px;height:48px;bottom:16px;right:12px}}
+    .bk-wrap .corner{
+      position:absolute;inset:0;border-radius:14px;
+      box-shadow:inset 1px 1px 0 rgba(255,255,255,0.08),inset -1px -1px 0 rgba(0,0,0,0.3);
+      pointer-events:none;
+    }
+    .bk-wrap .inner{
+      width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+      border-radius:14px;overflow:hidden;position:relative;
+      background:linear-gradient(180deg,#2d2d2d,#1a1a1a);
+      box-shadow:inset 0 2px 4px rgba(0,0,0,0.5),inset 0 -1px 2px rgba(255,255,255,0.04);
+    }
+    .bk-wrap .inner svg{width:28px;height:28px;position:relative;z-index:2}
+    .bk-wrap .inner .symbol{fill:rgba(255,255,255,0.15);transition:fill 0.3s}
+    .bk-wrap .inner .symbol-path{
+      fill:none;stroke:rgba(255,255,255,0.5);stroke-width:8;
+      stroke-dasharray:650;stroke-dashoffset:0;
+    }
+    .bk-wrap .inner .symbol-path-glow{
+      fill:none;stroke:rgba(255,255,255,0.08);stroke-width:18;
+      stroke-dasharray:650;stroke-dashoffset:0;filter:blur(4px);
+    }
+    .bk-wrap .led{
+      position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+      width:8px;height:8px;border-radius:50%;
+      background:#111;
+      box-shadow:0 0 0px 2px rgba(0,0,0,0.3);
+      transition:all 0.4s;z-index:5;
+    }
+    .bk-wrap .bg{
+      position:absolute;inset:0;border-radius:14px;overflow:hidden;pointer-events:none;
+      box-shadow:inset 0 0 5px 1px black,inset 0 0 0 1px black;
+    }
+    .bk-wrap .shine-1{
+      position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+      background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,0.06),transparent 60%);
+      pointer-events:none;
+    }
+    .bk-wrap .shine-2{
+      position:absolute;bottom:0;left:0;right:0;height:40%;
+      background:linear-gradient(to top,rgba(255,255,255,0.02),transparent);
+      pointer-events:none;
+    }
+    .bk-wrap .bg-glow{
+      position:absolute;inset:-8px;border-radius:20px;
+      background:radial-gradient(circle,rgba(30,144,255,0.15),transparent 70%);
+      opacity:0;transition:opacity 0.5s;pointer-events:none;
+    }
+    .bk-wrap .noise{
+      position:absolute;inset:0;border-radius:14px;overflow:hidden;
+      opacity:0.03;pointer-events:none;mix-blend-mode:overlay;
+    }
+    /* Pressed state */
+    .bk-wrap input:checked ~ .button{
+      transform:translateY(2px);
+      box-shadow:0 1px 4px rgba(0,0,0,0.5),0 1px 0 rgba(255,255,255,0.04) inset;
+    }
+    .bk-wrap input:checked ~ .led{
+      background:#4fc3f7;
+      box-shadow:0 0 12px 4px rgba(79,195,247,0.5),0 0 0px 2px rgba(0,0,0,0.4),0 -6px 18px 6px rgba(79,195,247,0.2);
+    }
+    .bk-wrap input:checked ~ .bg-glow{opacity:1}
+    .bk-wrap input:checked ~ .button .inner .symbol{fill:rgba(79,195,247,0.3)}
+    .bk-wrap input:checked ~ .button .inner .symbol-path{stroke:rgba(79,195,247,0.9);animation:symbolPath 2s linear infinite}
+    .bk-wrap input:checked ~ .button .inner .symbol-path-glow{stroke:rgba(79,195,247,0.3);animation:symbolPath 2s linear infinite}
+    .bk-wrap input:checked ~ .bg{box-shadow:inset 0 -2px 0px -1px rgba(79,195,247,0.3),inset 0 0 5px 1px black,inset 0 0 0 1px black}
+    /* Unchecked animation */
+    .bk-wrap input:not(:checked) ~ .led{animation:ledTurnOff 1.5s ease forwards}
+    .bk-wrap input:not(:checked) ~ .button .inner .symbol-path{animation:symbolPath2 1s linear forwards;stroke:rgba(255,200,0,0.7)}
+    .bk-wrap input:not(:checked) ~ .bg{animation:bgBeforeTurnOff 1.5s ease forwards}
+    .bk-wrap:hover .button{box-shadow:0 5px 16px rgba(0,0,0,0.6),0 1px 0 rgba(255,255,255,0.08) inset}
+    .bk-wrap:active .button{transform:translateY(2px)!important}
+    @media(pointer:coarse){.bk-wrap{--size:66px;bottom:16px;right:14px}}
+    @media(max-width:400px){.bk-wrap{--size:58px;bottom:14px;right:10px}}
+    @keyframes ledTurnOff{30%,60%{background:#ffdf4e;box-shadow:0 -6px 20px 8px rgba(255,200,0,0.5),0 0 0px 2px rgba(0,0,0,0.4)}60.1%,65%{background:#111;box-shadow:none}65.1%,70%{background:#ffdf4e;box-shadow:0 -6px 20px 8px rgba(255,200,0,0.5)}70.1%,100%{background:#111;box-shadow:0 0 0px 2px rgba(0,0,0,0.3)}}
+    @keyframes bgBeforeTurnOff{30%,60%{box-shadow:inset 0 -2px 0 -1px rgba(255,230,120,0.3),inset 0 0 5px 1px black,inset 0 0 0 1px black}60.1%,100%{box-shadow:inset 0 0 5px 1px black,inset 0 0 0 1px black}}
+    @keyframes symbolPath{0%{stroke-dashoffset:-650}50%{stroke-dashoffset:0}100%{stroke-dashoffset:650}}
+    @keyframes symbolPath2{0%{stroke-dashoffset:0}100%{stroke-dashoffset:650}}
   </style>
 </head>
 <body>
@@ -724,12 +780,42 @@
 
 <svg style="display:none"><filter id="gd" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox"><feTurbulence type="fractalNoise" baseFrequency="0.001 0.005" numOctaves="1" seed="17" result="t"/><feGaussianBlur in="t" stdDeviation="3" result="s"/><feSpecularLighting in="s" surfaceScale="5" specularConstant="1" specularExponent="100" lightingColor="white" result="l"><fePointLight x="-200" y="-200" z="300"/></feSpecularLighting></filter></svg>
 
-<!-- Fullscreen Toggle Button -->
-<button class="fs-btn" id="fsBtn" onclick="toggleFullScreen()" title="App Mode">
-  <span class="fs-btn-label" id="fsBtnLabel">App Mode</span>
-  <svg class="fs-ico-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-  <svg class="fs-ico-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-</button>
+<!-- Bluetooth Key Fullscreen Toggle -->
+<div class="bk-wrap" id="bkWrap">
+  <label class="wrap">
+    <input id="bkToggle" type="checkbox" onchange="toggleFullScreen()" />
+    <button class="button" type="button">
+      <div class="corner"></div>
+      <div class="inner">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 390 430">
+          <g filter="url(#bk-inset)" class="symbol">
+            <path d="M202.884 13.3026C196.814 7.846 188.099 6.469 180.642 9.787C173.182 13.106 168.377 20.498 168.377 28.655V164.683L78.618 75.033C70.543 66.966 57.452 66.966 49.378 75.033C41.304 83.099 41.304 96.177 49.378 104.243L159.813 214.548L49.379 324.853C41.305 332.919 41.305 345.997 49.379 354.063C57.453 362.129 70.544 362.129 78.618 354.063L168.377 264.413V400.441C168.377 408.598 173.182 415.99 180.642 419.309C188.099 422.629 196.814 421.251 202.884 415.794L306.262 322.847C310.618 318.931 313.105 313.35 313.105 307.495C313.105 301.639 310.618 296.06 306.262 292.142L219.958 214.548L306.262 136.954C310.618 133.037 313.105 127.457 313.105 121.602C313.105 115.746 310.618 110.166 306.262 106.249L202.884 13.3026ZM261.524 307.495L209.728 260.926V354.063L261.524 307.495ZM261.524 121.602L209.728 168.171V75.033L261.524 121.602Z" clip-rule="evenodd" fill-rule="evenodd"/>
+            <circle r="30" cy="215" cx="343"/><circle r="30" cy="215" cx="46"/>
+          </g>
+          <g class="symbol-path symbol-path-glow">
+            <circle r="30" cy="215" cx="343"/><circle r="30" cy="215" cx="46"/>
+            <path stroke-linejoin="round" stroke-linecap="round" d="M188.5 213.5L189.5 29L291.5 122C200.028 205.699 151.078 251.942 64 340"/>
+            <path stroke-linejoin="round" stroke-linecap="round" d="M188.5 215.5L189.5 400L291.5 307C200.028 223.301 151.078 177.058 64 89"/>
+          </g>
+          <g class="symbol-path">
+            <circle r="10" cy="215" cx="343"/><circle r="10" cy="215" cx="46"/>
+            <path stroke-linejoin="round" stroke-linecap="round" d="M188.5 213.5L189.5 29L291.5 122C200.028 205.699 151.078 251.942 64 340"/>
+            <path stroke-linejoin="round" stroke-linecap="round" d="M188.5 215.5L189.5 400L291.5 307C200.028 223.301 151.078 177.058 64 89"/>
+          </g>
+          <defs>
+            <filter id="bk-inset"><feOffset dy="0" dx="0"/><feGaussianBlur result="offset-blur" stdDeviation="10"/><feComposite result="inverse" in2="offset-blur" in="SourceGraphic" operator="out"/><feFlood result="color" flood-opacity="1" flood-color="black"/><feComposite result="shadow" in2="inverse" in="color" operator="in"/><feComposite in2="SourceGraphic" in="shadow" operator="over"/><feDropShadow flood-color="white" flood-opacity="0.2" stdDeviation="0" dy="5" dx="5"/></filter>
+          </defs>
+        </svg>
+      </div>
+    </button>
+    <div class="led"></div>
+    <div class="bg"><div class="shine-1"></div><div class="shine-2"></div></div>
+    <div class="bg-glow"></div>
+  </label>
+  <div class="noise">
+    <svg height="100%" width="100%"><defs><pattern height="500" width="500" patternUnits="userSpaceOnUse" id="bk-noise-pattern"><filter y="0" x="0" id="bk-noise"><feTurbulence stitchTiles="stitch" numOctaves="3" baseFrequency="0.65" type="fractalNoise"/><feBlend mode="screen"/></filter><rect filter="url(#bk-noise)" height="500" width="500"/></pattern></defs><rect fill="url(#bk-noise-pattern)" height="100%" width="100%"/></svg>
+  </div>
+</div>
 
 <div class="app">
   <div class="header">
@@ -1522,42 +1608,32 @@ function toggleLightDark(){
 
 renderCal();rg('mG',MAIN,mQ,'m');rg('oG',OTH,oQ,'o');uS();loadH();
 
-// ===== FULLSCREEN TOGGLE =====
+// ===== FULLSCREEN TOGGLE (Bluetooth Key) =====
 function toggleFullScreen(){
-  const btn=document.getElementById('fsBtn');
-  const label=document.getElementById('fsBtnLabel');
-  if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement){
+  const cb=document.getElementById('bkToggle');
+  if(cb.checked){
     const el=document.documentElement;
     if(el.requestFullscreen) el.requestFullscreen();
     else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
     else if(el.msRequestFullscreen) el.msRequestFullscreen();
-    btn.classList.add('active');
-    label.textContent='Exit App Mode';
     toast('App Mode ON ✨');
   }else{
     if(document.exitFullscreen) document.exitFullscreen();
     else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
     else if(document.msExitFullscreen) document.msExitFullscreen();
-    btn.classList.remove('active');
-    label.textContent='App Mode';
     toast('App Mode OFF');
   }
 }
-// Sync button state when user exits fullscreen via Esc key
-document.addEventListener('fullscreenchange',syncFsBtn);
-document.addEventListener('webkitfullscreenchange',syncFsBtn);
-document.addEventListener('MSFullscreenChange',syncFsBtn);
-function syncFsBtn(){
-  const btn=document.getElementById('fsBtn');
-  const label=document.getElementById('fsBtnLabel');
-  if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement){
-    btn.classList.remove('active');
-    label.textContent='App Mode';
-  }else{
-    btn.classList.add('active');
-    label.textContent='Exit App Mode';
-  }
+// Sync checkbox when user exits fullscreen via Esc key
+document.addEventListener('fullscreenchange',syncBk);
+document.addEventListener('webkitfullscreenchange',syncBk);
+document.addEventListener('MSFullscreenChange',syncBk);
+function syncBk(){
+  const cb=document.getElementById('bkToggle');
+  const isFs=!!(document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement);
+  if(cb.checked!==isFs) cb.checked=isFs;
 }
 </script>
 </body>
 </html>
+
