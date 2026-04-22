@@ -735,9 +735,9 @@
       pointer-events:none;
     }
     .bk-wrap .bg-glow{
-      position:absolute;inset:0;border-radius:12px;overflow:hidden;
-      background:radial-gradient(circle,var(--bk-glow),transparent 70%);
-      opacity:0;transition:opacity 0.5s;pointer-events:none;
+      position:absolute;inset:0;border-radius:12px;
+      border:2px solid transparent;
+      opacity:0;transition:opacity 0.4s;pointer-events:none;
     }
     .bk-wrap .noise{
       position:absolute;inset:0;border-radius:12px;overflow:hidden;
@@ -752,11 +752,11 @@
       background:var(--bk-glow);
       box-shadow:0 0 0px 2px rgba(0,0,0,0.4);
     }
-    .bk-wrap input:checked ~ .bg-glow{opacity:0.15}
+    .bk-wrap input:checked ~ .bg-glow{opacity:1;border-color:var(--bk-glow)}
     .bk-wrap input:checked ~ .bk-btn .inner .symbol{fill:var(--bk-glow)}
     .bk-wrap input:checked ~ .bk-btn .inner .symbol-path{stroke:var(--bk-glow)}
     .bk-wrap input:checked ~ .bk-btn .inner .symbol-path-glow{stroke:var(--bk-glow)}
-    .bk-wrap input:checked ~ .bg{box-shadow:inset 0 0 6px 1px var(--bk-glow),inset 0 0 0 1px rgba(0,0,0,0.3)}
+    .bk-wrap input:checked ~ .bg{box-shadow:inset 0 0 8px 0px var(--bk-glow),inset 0 0 0 1px var(--bk-glow)}
     .bk-wrap:hover .bk-btn{box-shadow:0 4px 14px rgba(0,0,0,0.6),0 1px 0 rgba(255,255,255,0.08) inset}
     .bk-wrap:active .bk-btn{transform:translateY(1px)!important}
     @media(pointer:coarse){.bk-wrap{--size:48px}}
