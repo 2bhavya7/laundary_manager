@@ -679,6 +679,43 @@
       .hc{padding:16px}
       .btn{padding:16px 18px;font-size:14px}
     }
+
+    /* ===== FULLSCREEN BUTTON ===== */
+    .fs-btn{
+      position:fixed;bottom:24px;right:24px;z-index:999;
+      width:50px;height:50px;border-radius:50%;
+      background:rgba(10,12,20,0.75);
+      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,0.12);
+      color:rgba(255,255,255,0.7);
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 4px 20px rgba(0,0,0,0.3),0 0 0 1px rgba(255,255,255,0.04) inset;
+      transition:all 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+      touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+    }
+    .fs-btn:hover{background:rgba(20,22,40,0.85);border-color:rgba(255,255,255,0.22);color:#fff;transform:scale(1.08);box-shadow:0 6px 28px rgba(0,0,0,0.4),0 0 14px rgba(255,255,255,0.05)}
+    .fs-btn:active{transform:scale(0.95)}
+    .fs-btn svg{width:22px;height:22px;transition:transform 0.3s ease}
+    .fs-btn.active{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);color:#fff;}
+    .fs-btn .fs-ico-exit{display:none}
+    .fs-btn.active .fs-ico-enter{display:none}
+    .fs-btn.active .fs-ico-exit{display:block}
+    .fs-btn-label{
+      position:absolute;right:60px;top:50%;transform:translateY(-50%);
+      background:rgba(10,12,20,0.85);backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.10);border-radius:10px;
+      padding:6px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);
+      white-space:nowrap;opacity:0;pointer-events:none;
+      transition:opacity 0.25s ease,transform 0.25s ease;
+      transform:translateY(-50%) translateX(8px);
+    }
+    .fs-btn:hover .fs-btn-label{opacity:1;transform:translateY(-50%) translateX(0)}
+    body.light-mode .fs-btn{background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.5);color:rgba(0,0,0,0.5);box-shadow:0 4px 20px rgba(0,0,0,0.08),inset 0 1px 0 rgba(255,255,255,0.7)}
+    body.light-mode .fs-btn:hover{background:rgba(255,255,255,0.8);color:rgba(0,0,0,0.7)}
+    body.light-mode .fs-btn.active{background:rgba(0,0,0,0.08);color:rgba(0,0,0,0.6)}
+    body.light-mode .fs-btn-label{background:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.5);color:rgba(0,0,0,0.6)}
+    @media(pointer:coarse){.fs-btn{width:54px;height:54px;bottom:20px;right:16px}}
+    @media(max-width:400px){.fs-btn{width:48px;height:48px;bottom:16px;right:12px}}
   </style>
 </head>
 <body>
@@ -686,6 +723,13 @@
 <div id="stars"></div><div id="stars2"></div><div id="stars3"></div><div id="horizon"></div>
 
 <svg style="display:none"><filter id="gd" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox"><feTurbulence type="fractalNoise" baseFrequency="0.001 0.005" numOctaves="1" seed="17" result="t"/><feGaussianBlur in="t" stdDeviation="3" result="s"/><feSpecularLighting in="s" surfaceScale="5" specularConstant="1" specularExponent="100" lightingColor="white" result="l"><fePointLight x="-200" y="-200" z="300"/></feSpecularLighting></filter></svg>
+
+<!-- Fullscreen Toggle Button -->
+<button class="fs-btn" id="fsBtn" onclick="toggleFullScreen()" title="App Mode">
+  <span class="fs-btn-label" id="fsBtnLabel">App Mode</span>
+  <svg class="fs-ico-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+  <svg class="fs-ico-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+</button>
 
 <div class="app">
   <div class="header">
@@ -1477,6 +1521,43 @@ function toggleLightDark(){
 })();
 
 renderCal();rg('mG',MAIN,mQ,'m');rg('oG',OTH,oQ,'o');uS();loadH();
+
+// ===== FULLSCREEN TOGGLE =====
+function toggleFullScreen(){
+  const btn=document.getElementById('fsBtn');
+  const label=document.getElementById('fsBtnLabel');
+  if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement){
+    const el=document.documentElement;
+    if(el.requestFullscreen) el.requestFullscreen();
+    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else if(el.msRequestFullscreen) el.msRequestFullscreen();
+    btn.classList.add('active');
+    label.textContent='Exit App Mode';
+    toast('App Mode ON ✨');
+  }else{
+    if(document.exitFullscreen) document.exitFullscreen();
+    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+    else if(document.msExitFullscreen) document.msExitFullscreen();
+    btn.classList.remove('active');
+    label.textContent='App Mode';
+    toast('App Mode OFF');
+  }
+}
+// Sync button state when user exits fullscreen via Esc key
+document.addEventListener('fullscreenchange',syncFsBtn);
+document.addEventListener('webkitfullscreenchange',syncFsBtn);
+document.addEventListener('MSFullscreenChange',syncFsBtn);
+function syncFsBtn(){
+  const btn=document.getElementById('fsBtn');
+  const label=document.getElementById('fsBtnLabel');
+  if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement){
+    btn.classList.remove('active');
+    label.textContent='App Mode';
+  }else{
+    btn.classList.add('active');
+    label.textContent='Exit App Mode';
+  }
+}
 </script>
 </body>
 </html>
